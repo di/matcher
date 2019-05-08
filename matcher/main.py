@@ -12,7 +12,7 @@ DEBUG = os.environ["DEVEL"] == "yes"
 THANKS_URL = os.environ["THANKS_URL"]
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URI"]
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URL"]
 app.debug = DEBUG
 app.secret_key = os.environ["SESSION_SECRET"]
 

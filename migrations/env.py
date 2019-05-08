@@ -22,7 +22,7 @@ fileConfig(config.config_file_name)
 logger = logging.getLogger("alembic.env")
 
 config.set_main_option(
-    "sqlalchemy.url", current_app.config.get("SQLALCHEMY_DATABASE_URI")
+    "sqlalchemy.url", current_app.config.get("SQLALCHEMY_DATABASE_URL")
 )
 target_metadata = current_app.extensions["migrate"].db.metadata
 
