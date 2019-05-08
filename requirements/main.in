@@ -1,0 +1,5 @@
+Flask
+Flask-Migrate
+psycopg2-binary
+wtforms
+requests
