@@ -8,7 +8,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 from matcher.forms import NewDonationForm, NewMatchForm
 
-DEBUG = os.environ["DEVEL"] == "yes"
+DEBUG = os.environ.get("DEVEL", "no") == "yes"
 THANKS_URL = os.environ["THANKS_URL"]
 
 app = Flask(__name__)
