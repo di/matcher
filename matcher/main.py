@@ -68,8 +68,15 @@ def match(match_id):
     form = NewDonationForm(request.form)
     if request.method == "POST" and form.validate():
         transaction_id = form.transaction_id.data
-        resp = requests.get(THANKS_URL.format(transaction_id))
 
+        exists = db.session.query(
+            db.exists().where(Donation.id == transaction_id)
+        ).scalar()
+        if exists:
+            flash("Transaction number has already been used")
+            return redirect(url_for("match", match_id=match.id))
+
+        resp = requests.get(THANKS_URL.format(transaction_id))
         if not resp.json():
             flash("Invalid transaction number")
             return redirect(url_for("match", match_id=match.id))
