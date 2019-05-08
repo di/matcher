@@ -1,9 +1,8 @@
 import datetime
 import os
-import datetime
 
 import requests
-from flask import Flask, render_template, request, url_for, abort, redirect
+from flask import Flask, render_template, request, url_for, abort, redirect, flash
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
@@ -15,6 +14,7 @@ THANKS_URL = os.environ["THANKS_URL"]
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DATABASE_URI"]
 app.debug = DEBUG
+app.secret_key = os.environ["SESSION_SECRET"]
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -69,6 +69,11 @@ def match(match_id):
     if request.method == "POST" and form.validate():
         transaction_id = form.transaction_id.data
         resp = requests.get(THANKS_URL.format(transaction_id))
+
+        if not resp.json():
+            flash('Invalid transaction number')
+            return redirect(url_for("match", match_id=match.id))
+
         donation = Donation(
             id=transaction_id, name=form.name.data, match_id=match.id, **resp.json()
         )
