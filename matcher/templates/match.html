@@ -12,4 +12,25 @@ Current total: ${{ match.total_dollars }}.{{ "%02d" % match.total_cents }}
     <div>{{ form.name.label }}: {{ form.name() }}</div>
     <input type="submit">
 </form>
+
+{% if match.donations %}
+    <h3>Donations in this match:</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Donor</th>
+                <th>Donation amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for donation in match.donations %}
+            <tr>
+                <td>{{ donation.name }}</td>
+                <td>${{ donation.amount }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endif %}
 {% endblock %}
