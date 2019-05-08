@@ -2,7 +2,7 @@ import datetime
 import os
 
 import requests
-from flask import Flask, render_template, request, url_for, abort, redirect, flash
+from flask import Flask, abort, flash, redirect, render_template, request, url_for
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
@@ -71,14 +71,14 @@ def match(match_id):
         resp = requests.get(THANKS_URL.format(transaction_id))
 
         if not resp.json():
-            flash('Invalid transaction number')
+            flash("Invalid transaction number")
             return redirect(url_for("match", match_id=match.id))
 
         donation = Donation(
             id=transaction_id, name=form.name.data, match_id=match.id, **resp.json()
         )
         db.session.add(donation)
-        donation_dollars, donation_cents = [int(x) for x in donation.amount.split('.')]
+        donation_dollars, donation_cents = [int(x) for x in donation.amount.split(".")]
         total_cents = match.total_cents + donation_cents
         match.total_dollars += donation_dollars + total_cents // 100
         match.total_cents += total_cents % 100
