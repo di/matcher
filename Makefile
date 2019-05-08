@@ -12,8 +12,17 @@ serve: .state/docker-build
 initdb:
 	docker-compose run --rm web psql -h db -d postgres -U postgres -c "DROP DATABASE IF EXISTS matcher"
 	docker-compose run --rm web psql -h db -d postgres -U postgres -c "CREATE DATABASE matcher ENCODING 'UTF8'"
-	docker-compose run --rm web python -m alembic upgrade head
+	docker-compose run --rm web flask db init
 
+migratedb:
+	docker-compose run --rm web flask db migrate
+
+upgradedb:
+	docker-compose run --rm web flask db upgrade
+
+reformat:
+	docker-compose run --rm web isort -rc matcher migrations
+	docker-compose run --rm web black matcher migrations
 
 
 .PHONY: default serve initdb
