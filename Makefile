@@ -15,7 +15,7 @@ initdb:
 	docker-compose run --rm web flask db init
 
 migratedb:
-	docker-compose run --rm web flask db migrate
+	docker-compose run --rm web flask db migrate --message "$(MESSAGE)"
 
 upgradedb:
 	docker-compose run --rm web flask db upgrade

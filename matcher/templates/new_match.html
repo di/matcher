@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Create a new matching donation</h1>
+{{ form_errors(form) }}
+<form method="POST">
+    <div>{{ form.title.label }}: {{ form.title() }}</div>
+    <div>{{ form.goal.label }}: {{ form.goal() }}</div>
+    <input type="submit">
+</form>
+{% endblock %}

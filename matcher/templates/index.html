@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Yo</h1>
+<ul>
+    {% for match in matches %}
+    <li><a href="{{ url_for('match', match_id=match.id) }}">{{ match.title }}</a>
+    {% endfor %}
+</ul>
+<a href="{{ url_for('new_match') }}">Create a new donation match goal</a>
+{% endblock %}

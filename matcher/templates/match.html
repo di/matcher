@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ match.title }}</h1>
+Goal: ${{ match.goal_dollars }}.00
+Current total: ${{ match.total_dollars }}.{{ "%02d" % match.total_cents }}
+
+<h3>Add a donation to this match:</h3>
+{{ form_errors(form) }}
+<form method="POST">
+    <div>{{ form.transaction_id.label }}: {{ form.transaction_id() }}</div>
+    <div>{{ form.name.label }}: {{ form.name() }}</div>
+    <input type="submit">
+</form>
+{% endblock %}

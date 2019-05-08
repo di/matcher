@@ -1,2 +1,4 @@
 DATABASE_URI=postgresql://postgres@db/matcher
 FLASK_APP=matcher.main:app
+THANKS_URL=https://thanks.pyfound.org/transaction/{}
+DEVEL=yes
