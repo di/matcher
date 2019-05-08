@@ -1,6 +1,7 @@
 from __future__ import with_statement
 
 import logging
+import os
 from logging.config import fileConfig
 
 from alembic import context
@@ -21,9 +22,7 @@ config = context.config
 fileConfig(config.config_file_name)
 logger = logging.getLogger("alembic.env")
 
-config.set_main_option(
-    "sqlalchemy.url", current_app.config.get("SQLALCHEMY_DATABASE_URL")
-)
+config.set_main_option("sqlalchemy.url", os.environ.get("DATABASE_URL"))
 target_metadata = current_app.extensions["migrate"].db.metadata
 
 # other values from the config, defined by the needs of env.py,
