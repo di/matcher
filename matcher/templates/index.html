@@ -8,7 +8,7 @@
 <h3>I want to match donations too, what do I do?</h3>
 <p>
     <ol>
-        <li>Create a new donation match goal</li>
+        <li>Create a <a href="{{ url_for('new_match') }}">new donation match goal</a></li>
         <li>Share a link to your goal</li>
         <li>Tell your donors to <a href="https://psfmember.org/civicrm/contribute/transact?reset=1&id=26">make a regular donation to the PSF</a></li>
         <li>In the emailed donation reciept, there will be a "Transaction #"</li>
@@ -17,14 +17,26 @@
     </ol>
 </p>
 
-<a href="{{ url_for('new_match') }}" class="btn btn-success">Create a new donation match goal</a>
+<a href="{{ url_for('new_match') }}" class="btn btn-success">Create a new donation match goal now</a>
+{% if matches %}
 <br>
 <br>
 <hr>
 <h3>Current donation drives:</h3>
 <ul>
+    <div class="list-group mt-3">
     {% for match in matches %}
-    <li><a href="{{ url_for('match', match_id=match.id) }}">"{{ match.title }}"</a> by {{ byline(match) }} - <b>${{ match.total_dollars }}.{{ "%02d" % match.total_cents }} raised</b> of ${{ match.goal_dollars }}.00
+        <a href="{{ url_for('match', match_id=match.id) }}" class="list-group-item list-group-item-action flex-column align-items-start list-group-item-dark">
+            <div class="d-flex w-60 justify-content-between">
+                <h5 class="mb-1">{{ match.title }}</h5>
+                <p class="mb-1">
+                    <b>${{ match.total_dollars }}.{{ "%02d" % match.total_cents }} raised</b> of ${{ match.goal_dollars }}.00
+                </p>
+            </div>
+            <small class="text-muted"> by {{ byline_nolink(match) }}</small>
+        </a>
     {% endfor %}
+    </div>
 </ul>
+{% endif %}
 {% endblock %}

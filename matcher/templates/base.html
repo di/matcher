@@ -10,6 +10,16 @@
     {% endif %}
 {%- endmacro %}
 
+{% macro byline_nolink(match) %}
+    {% if match.twitter %}
+        @{{ match.twitter }}
+    {% elif match.name %}
+        {{ match.name }}
+    {% else %}
+        Anonymous
+    {% endif %}
+{% endmacro %}
+
 {% macro byline(match) %}
     {% if match.name and match.twitter %}
         <a rel="nofollow" href='https://twitter.com/{{ match.twitter }}'>{{ match.name }}</a>
@@ -54,7 +64,7 @@
   </head>
   <body class="text-center">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-    <header class="masthead mb-auto">
+    <header class="masthead mb-auto mt-3">
         <div class="inner">
         <a href="/"><h3 class="masthead-brand">PSF Donation Matcher</h3></a>
         <!--
@@ -75,14 +85,15 @@
             </ul>
         {% endif %}
         {% endwith %}
-    <main role="main" class="inner cover">
+    <main role="main" class="inner cover mt-5">
     {% block content %}
     {% endblock %}
     </main>
 
-    <footer class="mastfoot mt-auto">
+    <footer class="mastfoot mt-5 mb-5">
         <div class="inner">
         <p>Built with love by <a href="https://twitter.com/di_codes">@di_codes</a>.</p>
+        <small><a href="https://python.org/psf-landing">Hosted by the PSF Community Infrastructure</a></small>
         </div>
     </footer>
 
