@@ -1,3 +1,10 @@
+{% macro progress(match) -%}
+{% set percent = match.total_dollars/match.goal_dollars * 100 %}
+<div class="progress">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{ percent }}%" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100">{{percent|round}}%</div>
+</div>
+{%- endmacro %}
+
 {% macro form_errors(form) -%}
     {% if form.errors %}
         <ul class="errors">
