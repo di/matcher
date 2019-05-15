@@ -43,11 +43,12 @@ class Match(db.Model):
     goal_dollars = db.Column(db.Integer)
     total_dollars = db.Column(db.Integer, default=0)
     total_cents = db.Column(db.Integer, default=0)
+    hidden = db.Column(db.Boolean, default=False)
 
 
 @app.route("/")
 def index():
-    matches = Match.query.all()
+    matches = Match.query.filter(Match.hidden.isnot(True)).all()
     return render_template("index.html", matches=matches)
 
 
@@ -71,7 +72,7 @@ def new_match():
 @app.route("/match/<match_id>/", methods=["GET", "POST"])
 def match(match_id):
     match = db.session.query(Match).get(match_id)
-    if not match:
+    if not match or match.hidden:
         abort(404)
     form = NewDonationForm(request.form)
     if request.method == "POST" and form.validate():
@@ -106,6 +107,14 @@ def match(match_id):
         return redirect(url_for("match", match_id=match.id))
     else:
         return render_template("match.html", match=match, form=form)
+
+
+@app.route(f"/match/<match_id>/{os.environ['DELETE_SECRET']}", methods=["DELETE"])
+def delete(match_id):
+    match = db.session.query(Match).get(match_id)
+    match.hidden = True
+    db.session.commit()
+    return "OK"
 
 
 @app.route("/_health/")
