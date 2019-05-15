@@ -9,10 +9,7 @@
 
 {% block content %}
 <h3>"{{ match.title }}" by {{ byline(match) }}</h3>
-{% set percent = match.total_dollars/match.goal_dollars * 100 %}
-<div class="progress">
-    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{ percent }}%" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100">{{percent|round}}%</div>
-</div>
+{{ progress(match) }}
 <b>${{ match.total_dollars }}.{{ "%02d" % match.total_cents }} raised</b> of ${{ match.goal_dollars }}.00
 <hr>
 <h3>Add a donation to this match:</h3>

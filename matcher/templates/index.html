@@ -34,11 +34,12 @@
     <a href="{{ url_for('match', match_id=match.id) }}" class="list-group-item list-group-item-action flex-column align-items-start list-group-item-dark">
         <div class="d-flex w-60 justify-content-between">
             <h5 class="mb-1">{{ match.title }}</h5>
-            <p class="mb-1">
-                <b>${{ match.total_dollars }}.{{ "%02d" % match.total_cents }} raised</b> of ${{ match.goal_dollars }}.00
-            </p>
+            <small class="text-muted"> by {{ byline_nolink(match) }}</small>
         </div>
-        <small class="text-muted"> by {{ byline_nolink(match) }}</small>
+        <p class="mb-1">
+            <b>${{ match.total_dollars }}.{{ "%02d" % match.total_cents }} raised</b> of ${{ match.goal_dollars }}.00
+        </p>
+        {{ progress(match) }}
     </a>
 {% endfor %}
 </div>
