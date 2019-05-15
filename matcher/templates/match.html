@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 
+{% block header %}
+<meta property="og:type" content="website" />
+<meta property="og:title" content="{{ match.name }}" />
+<meta property="og:description" content="A matching donation drive with a goal of ${{ match.goal_dollars }}.00 by {{ byline_nolink(match) }}" />
+{% endblock %}
+
+
 {% block content %}
 <h3>"{{ match.title }}" by {{ byline(match) }}</h3>
 {% set percent = match.total_dollars/match.goal_dollars * 100 %}

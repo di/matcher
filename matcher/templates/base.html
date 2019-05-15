@@ -10,15 +10,15 @@
     {% endif %}
 {%- endmacro %}
 
-{% macro byline_nolink(match) %}
-    {% if match.twitter %}
+{% macro byline_nolink(match) -%}
+    {%- if match.twitter -%}
         @{{ match.twitter }}
-    {% elif match.name %}
+    {%- elif match.name -%}
         {{ match.name }}
-    {% else %}
+    {%- else -%}
         Anonymous
-    {% endif %}
-{% endmacro %}
+    {%- endif -%}
+{%- endmacro %}
 
 {% macro byline(match) %}
     {% if match.name and match.twitter %}
@@ -61,6 +61,8 @@
     </style>
     <!-- Custom styles for this template -->
     <link href="{{ url_for('static', filename='cover.css') }}" rel="stylesheet">
+    {% block header %}
+    {% endblock %}
   </head>
   <body class="text-center">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
