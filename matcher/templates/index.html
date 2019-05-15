@@ -25,7 +25,6 @@
 <ul>
     {% for match in matches %}
     <li><a href="{{ url_for('match', match_id=match.id) }}">"{{ match.title }}"</a> by {{ byline(match) }} - <b>${{ match.total_dollars }}.{{ "%02d" % match.total_cents }} raised</b> of ${{ match.goal_dollars }}.00
-        Hidden?{{match.hidden}}
     {% endfor %}
 </ul>
 {% endblock %}
