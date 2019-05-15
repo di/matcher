@@ -35,6 +35,8 @@ class Donation(db.Model):
 class Match(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String)
+    name = db.Column(db.String)
+    twitter = db.Column(db.String)
     donations = db.relationship("Donation", backref="match", lazy=True)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     goal_dollars = db.Column(db.Integer)
@@ -52,7 +54,12 @@ def index():
 def new_match():
     form = NewMatchForm(request.form)
     if request.method == "POST" and form.validate():
-        match = Match(title=form.title.data, goal_dollars=int(form.goal.data))
+        match = Match(
+            title=form.title.data,
+            name=form.name.data,
+            twitter=form.twitter.data,
+            goal_dollars=int(form.goal.data),
+        )
         db.session.add(match)
         db.session.commit()
         return redirect(url_for("match", match_id=match.id))
