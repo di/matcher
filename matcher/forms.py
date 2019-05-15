@@ -27,6 +27,10 @@ class NewDonationForm(Form):
         default="Anonymous",
         render_kw={"placeholder": "Anonymous", "size": "35"},
     )
+    twitter = StringField(
+        "Your Twitter handle (optional)",
+        render_kw={"placeholder": "your_twitter_handle", "size": "35"},
+    )
     transaction_id = StringField(
         "Transaction # from your donation confirmation email",
         [validators.DataRequired()],

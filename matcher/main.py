@@ -29,6 +29,7 @@ class Donation(db.Model):
 
     # Additional fields
     name = db.Column(db.String)
+    twitter = db.Column(db.String)
     match_id = db.Column(db.Integer, db.ForeignKey("match.id"), nullable=False)
 
 
@@ -89,7 +90,11 @@ def match(match_id):
             return redirect(url_for("match", match_id=match.id))
 
         donation = Donation(
-            id=transaction_id, name=form.name.data, match_id=match.id, **resp.json()
+            id=transaction_id,
+            name=form.name.data,
+            twitter=form.twitter.data,
+            match_id=match.id,
+            **resp.json()
         )
         db.session.add(donation)
         donation_dollars, donation_cents = [int(x) for x in donation.amount.split(".")]
