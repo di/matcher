@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+{% block header %}
+<meta property="og:type" content="website" />
+<meta property="og:title" content="PSF Donation Matcher" />
+<meta property="og:description" content="A tool to create matching donation goals for the PSF donation drive" />
+{% endblock %}
+
 {% block content %}
 <h3>What is this?</h3>
 <p>The Python Software Foundation is currently running a donation drive: <a href="https://www.python.org/psf/donations/2019-q2-drive/">"Building the PSF: the Q2 2019 Fundraiser"</a>. If you've benefited from the PSF or the Python community, you should donate!<p>
