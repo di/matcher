@@ -29,22 +29,26 @@ class Donation(db.Model):
 
     # Additional fields
     name = db.Column(db.String)
+    twitter = db.Column(db.String)
     match_id = db.Column(db.Integer, db.ForeignKey("match.id"), nullable=False)
 
 
 class Match(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String)
+    name = db.Column(db.String)
+    twitter = db.Column(db.String)
     donations = db.relationship("Donation", backref="match", lazy=True)
     created = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     goal_dollars = db.Column(db.Integer)
     total_dollars = db.Column(db.Integer, default=0)
     total_cents = db.Column(db.Integer, default=0)
+    hidden = db.Column(db.Boolean, default=False)
 
 
 @app.route("/")
 def index():
-    matches = Match.query.all()
+    matches = Match.query.filter(Match.hidden.isnot(True)).all()
     return render_template("index.html", matches=matches)
 
 
@@ -52,7 +56,12 @@ def index():
 def new_match():
     form = NewMatchForm(request.form)
     if request.method == "POST" and form.validate():
-        match = Match(title=form.title.data, goal_dollars=int(form.goal.data))
+        match = Match(
+            title=form.title.data,
+            name=form.name.data,
+            twitter=form.twitter.data,
+            goal_dollars=int(form.goal.data),
+        )
         db.session.add(match)
         db.session.commit()
         return redirect(url_for("match", match_id=match.id))
@@ -63,7 +72,7 @@ def new_match():
 @app.route("/match/<match_id>/", methods=["GET", "POST"])
 def match(match_id):
     match = db.session.query(Match).get(match_id)
-    if not match:
+    if not match or match.hidden:
         abort(404)
     form = NewDonationForm(request.form)
     if request.method == "POST" and form.validate():
@@ -82,7 +91,11 @@ def match(match_id):
             return redirect(url_for("match", match_id=match.id))
 
         donation = Donation(
-            id=transaction_id, name=form.name.data, match_id=match.id, **resp.json()
+            id=transaction_id,
+            name=form.name.data,
+            twitter=form.twitter.data,
+            match_id=match.id,
+            **resp.json()
         )
         db.session.add(donation)
         donation_dollars, donation_cents = [int(x) for x in donation.amount.split(".")]
@@ -94,6 +107,14 @@ def match(match_id):
         return redirect(url_for("match", match_id=match.id))
     else:
         return render_template("match.html", match=match, form=form)
+
+
+@app.route(f"/match/<match_id>/{os.environ['DELETE_SECRET']}", methods=["DELETE"])
+def delete(match_id):
+    match = db.session.query(Match).get(match_id)
+    match.hidden = True
+    db.session.commit()
+    return "OK"
 
 
 @app.route("/_health/")

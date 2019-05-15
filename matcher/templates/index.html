@@ -1,11 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Yo</h1>
+<h3>What is this?</h3>
+<p>The Python Software Foundation is currently running a donation drive: <a href="https://www.python.org/psf/donations/2019-q2-drive/">"Building the PSF: the Q2 2019 Fundraiser"</a>. If you've benefited from the PSF or the Python community, you should donate!<p>
+<p>To make things more interesting, I built this tool which allows an individual to set a goal for matching donations, and collect other's donations towards their matching goal.</p>
+<hr>
+<h3>I want to match donations too, what do I do?</h3>
+<p>
+    <ol>
+        <li>Create a new donation match goal</li>
+        <li>Share a link to your goal</li>
+        <li>Tell your donors to <a href="https://psfmember.org/civicrm/contribute/transact?reset=1&id=26">make a regular donation to the PSF</a></li>
+        <li>In the emailed donation reciept, there will be a "Transaction #"</li>
+        <li>Either your donors or you can add transaction IDs to increase your match towards your goal</li>
+        <li>Before the donation drive ends, make a matching donation!</li>
+    </ol>
+</p>
+
+<a href="{{ url_for('new_match') }}" class="btn btn-success">Create a new donation match goal</a>
+<br>
+<br>
+<hr>
+<h3>Current donation drives:</h3>
 <ul>
     {% for match in matches %}
-    <li><a href="{{ url_for('match', match_id=match.id) }}">{{ match.title }}</a>
+    <li><a href="{{ url_for('match', match_id=match.id) }}">"{{ match.title }}"</a> by {{ byline(match) }} - <b>${{ match.total_dollars }}.{{ "%02d" % match.total_cents }} raised</b> of ${{ match.goal_dollars }}.00
+        Hidden?{{match.hidden}}
     {% endfor %}
 </ul>
-<a href="{{ url_for('new_match') }}">Create a new donation match goal</a>
 {% endblock %}

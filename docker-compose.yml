@@ -12,7 +12,7 @@ services:
     command: hupper -m gunicorn.app.wsgiapp -b 0.0.0.0:8080 matcher.main:app
     env_file: dev/environment
     volumes:
-      - ./:/app
+      - .:/app/
     ports:
       - "80:8080"
     links:

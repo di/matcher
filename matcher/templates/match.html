@@ -1,31 +1,44 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>{{ match.title }}</h1>
-Goal: ${{ match.goal_dollars }}.00
-Current total: ${{ match.total_dollars }}.{{ "%02d" % match.total_cents }}
-
+<h3>"{{ match.title }}" by {{ byline(match) }}</h3>
+{% set percent = match.total_dollars/match.goal_dollars * 100 %}
+<div class="progress">
+    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{ percent }}%" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100">{{percent|round}}%</div>
+</div>
+<b>${{ match.total_dollars }}.{{ "%02d" % match.total_cents }} raised</b> of ${{ match.goal_dollars }}.00
+<hr>
 <h3>Add a donation to this match:</h3>
 {{ form_errors(form) }}
 <form method="POST">
-    <div>{{ form.transaction_id.label }}: {{ form.transaction_id() }}</div>
-    <div>{{ form.name.label }}: {{ form.name() }}</div>
-    <input type="submit">
+    <div class="form-group row">
+        <label for="transaction_id" class="col-sm-5 col-form-label">{{ form.transaction_id.label.text }}</label>
+        <div class="col-sm-5">
+            {{ form.transaction_id() }}
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="name" class="col-sm-5 col-form-label">{{ form.name.label.text }}</label>
+        <div class="col-sm-5">
+            {{ form.name() }}
+        </div>
+    </div>
+    <input type="submit" class="btn btn-success">
 </form>
-
 {% if match.donations %}
+    <hr>
     <h3>Donations in this match:</h3>
-    <table>
+    <table class="table table-dark">
         <thead>
             <tr>
-                <th>Donor</th>
-                <th>Donation amount</th>
+                <th scope="col">Donor</th>
+                <th scope="col">Donation amount</th>
             </tr>
         </thead>
         <tbody>
             {% for donation in match.donations %}
             <tr>
-                <td>{{ donation.name }}</td>
+                <td>{{ byline(donation) }}</td>
                 <td>${{ donation.amount }}</td>
             </tr>
             {% endfor %}
