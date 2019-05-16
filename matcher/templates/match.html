@@ -13,6 +13,7 @@
 <b>${{ match.total_dollars }}.{{ "%02d" % match.total_cents }} raised</b> of ${{ match.goal_dollars }}.00
 <hr>
 <h3>Add a donation to this match:</h3>
+{% if match.total_dollars < match.goal_dollars %}
 {{ form_errors(form) }}
 <form method="POST">
     <div class="form-group row">
@@ -29,6 +30,11 @@
     </div>
     <input type="submit" class="btn btn-success">
 </form>
+{% else %}
+<p>
+This goal has been reached! <a href="{{ url_for('index') }}">But you can still add your donation to another drive instead.</a>
+</p>
+{% endif %}
 {% if match.donations %}
     <hr>
     <h3>Donations in this match:</h3>

@@ -9,10 +9,11 @@
 serve: .state/docker-build
 	docker-compose up --remove-orphans
 
-initdb:
+wipedb:
 	docker-compose run --rm web psql -h db -d postgres -U postgres -c "DROP DATABASE IF EXISTS matcher"
 	docker-compose run --rm web psql -h db -d postgres -U postgres -c "CREATE DATABASE matcher ENCODING 'UTF8'"
-	docker-compose run --rm web flask db init
+
+initdb: wipedb upgradedb
 
 migratedb:
 	docker-compose run --rm web flask db migrate --message "$(MESSAGE)"
