@@ -48,7 +48,11 @@ class Match(db.Model):
 
 @app.route("/")
 def index():
-    matches = Match.query.filter(Match.hidden.isnot(True)).all()
+    current_time = datetime.datetime.utcnow()
+    thirteen_weeks_ago = current_time - datetime.timedelta(weeks=13)
+    matches = Match.query.filter(
+        Match.hidden.isnot(True), Match.created > thirteen_weeks_ago
+    ).all()
     return render_template("index.html", matches=matches)
 
 
@@ -95,7 +99,7 @@ def match(match_id):
             name=form.name.data,
             twitter=form.twitter.data,
             match_id=match.id,
-            **resp.json()
+            **resp.json(),
         )
         db.session.add(donation)
         donation_dollars, donation_cents = [int(x) for x in donation.amount.split(".")]
