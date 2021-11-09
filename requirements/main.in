@@ -3,3 +3,4 @@ Flask-Migrate
 psycopg2-binary
 wtforms
 requests
+sentry-sdk[flask]

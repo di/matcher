@@ -5,8 +5,16 @@ import requests
 from flask import Flask, abort, flash, redirect, render_template, request, url_for
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
 from matcher.forms import NewDonationForm, NewMatchForm
+
+SENTRY_DSN = os.environ["SENTRY_DSN"]
+sentry_sdk.init(
+    dsn=SENTRY_DSN,
+    integrations=[FlaskIntegration()],
+    traces_sample_rate=1.0,
+)
 
 DEBUG = os.environ.get("DEVEL", "no") == "yes"
 THANKS_URL = os.environ["THANKS_URL"]
