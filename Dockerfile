@@ -1,6 +1,6 @@
 # Use the official Python image.
 # https://hub.docker.com/_/python
-FROM python:3.7
+FROM python:3.8
 
 # Define whether we're building a production or a development image. This will
 # generally be used to control whether or not we install our development and
